@@ -23,5 +23,6 @@ import Manageruser.entities.UserInfor;
  */
 public interface TblUserLogics {
 	public boolean checkExistLoginID(String username, String password) throws ClassNotFoundException ;
-	public List<UserInfor> getListUsers(int ofset,int limit,int groupId,String fullName,String sortType,String sortByFullName,String sortByCodeLevel,String sortByEndDate);
+	public List<UserInfor> getListUsers(int ofset,int limit,int grId,String fullName,String sortType,String sortByFullName,String sortByCodeLevel,String sortByEndDate);
+	public String replaceWildcard(String fullName);
 }

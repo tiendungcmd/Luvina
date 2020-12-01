@@ -93,6 +93,15 @@ public class TblUserLogicsImpl implements TblUserLogics {
 		return tb.getListUsers(ofset, limit, groupId,fullName, sortType, sortByFullName, sortByCodeLevel, sortByEndDate);
 	}
 
+	
+/**
+ * 
+ */
+	@Override
+	public String replaceWildcard(String fullName) {
+		
+		return(Common.replaceWildcard(fullName)) ;
+	}
 	public static void main(String[] args) {
 		TblUserLogics tb = new TblUserLogicsImpl();
 		try {

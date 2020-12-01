@@ -137,22 +137,25 @@ public class TblUserDaoImpl extends BaseDaoImpl implements TblUserDao {
 			if (conn != null) {
 				// tao cau truy van
 				StringBuilder sql = new StringBuilder(
-						"select u.user_id,u.full_name,u.birthday,u.email,u.tel , gr.group_name, jp.name_level, de.end_date,de.total\r\n"
-								+ " from tbl_user u left join mst_group gr on u.group_id = gr.group_id\r\n"
-								+ "						left join tbl_detail_user_japan de on u.user_id = de.user_id\r\n"
-								+ "                        left join mst_japan jp on de.code_level = jp.code_level where u.full_name like ? ");
-//				if (groupId != 0) {
-//					sql.append(" u.group_id = ? ");
-//				}
-//				if (!"".equals(fullName)) {
-//					sql.append(" u.full_name like ? ");
-//				}
-
+						"select u.user_id,u.full_name,u.birthday,u.email,u.tel , gr.group_name, jp.name_level, de.end_date,de.total");
+				sql.append(" from tbl_user u left join mst_group gr on u.group_id = gr.group_id");
+				sql.append(" left join tbl_detail_user_japan de on u.user_id = de.user_id");
+				sql.append(" left join mst_japan jp on de.code_level = jp.code_level where u.rule= ? ");
+				sql.append("and u.group_id = ? OR ?  = 0 ");
+				sql.append("and u.full_name like ? ");
+				sql.append(" ORDER BY " +  sortType);
+				sql.append(" LIMIT ? OFFSET ? ");
 				
+				//gán giá trị truyền vào 
+				int i = 1;
 				PreparedStatement pre = conn.prepareStatement(sql.toString());
-			//	pre.setInt(i++, groupId);
-				pre.setString(1, "%" + fullName + "%");
-				
+				pre.setInt(i++, Constant.RULE);
+				pre.setInt(i++, groupId);
+				pre.setInt(i++, groupId);
+				pre.setString(i++, "%" + fullName + "%");
+				pre.setInt(i++, limit);
+				pre.setInt(i++, ofset);
+			//	pre.setString(i++, sortType);
 				// thu hien cau truy van
 				ResultSet rs = pre.executeQuery();
 				// khoi tao doi tuong userinfor
@@ -179,5 +182,26 @@ public class TblUserDaoImpl extends BaseDaoImpl implements TblUserDao {
 		}
 		// TODO Auto-generated method stub
 		return lstUser;
+	}
+	public  boolean getColumn(String column, String table) throws SQLException {
+		ArrayList<String> listColumn = new ArrayList<String>();
+		try {
+			ResultSet rs = conn.createStatement().executeQuery("SHOW COLUMNS FROM " + table);
+			while (rs.next()) {
+				listColumn.add(rs.getString(1));
+			}
+			if (column != null && listColumn.contains(column)) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return false;
+	}
+	public static void main(String[] args) {
+		TblUserDao tb = new TblUserDaoImpl();
+		
+		System.out.println(tb.getListUsers(0, 5, 0, "","full_name","","",""));
 	}
 }

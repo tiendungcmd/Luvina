@@ -30,5 +30,13 @@ public class Constant {
 			// URL đến LogoutController
 			public static final String URL_LOGOUT = "Logout";
 			public static final int RULE = 1;
+			//--------------CÁC HẠNG MỤC DEFAULT------------------
+			public static final int GROUP_ID_DEFAULT = 0;
+			public static final int OFFSET_DEFAULT = 0;
+			public static final String FULL_NAME_DEFAULT = "";
+			public static final String SORT_TYPE_DEFAULT = "full_name";
+			public static final String SORT_FULL_NAME_DEFAULT = "ASC";
+			public static final String SORT_NAME_LEVEL_DEFAULT = "ASC";
+			public static final String SORT_END_DATE_DEFAULT = "DESC";
 
 }

@@ -53,4 +53,8 @@ public class MessageErrorProperties {
 		String value = mapDBProperties.get(key);
 		return value;
 	}
+	public static void main(String[] args) {
+		MessageErrorProperties ms = new MessageErrorProperties();
+		System.out.println(ms.getValueByKey("MSG005"));
+	}
 }
