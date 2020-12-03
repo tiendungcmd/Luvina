@@ -42,7 +42,6 @@ public class Common {
 	/**
 	 * So sáng pass do người dùng nhập vào sau khi được mã hóa với pass lấy ra được
 	 * trong DB
-	 * 
 	 * @param pass   pass do người dùng nhập vào sau khi được mã hóa
 	 * @param passDB pass lấy ra được trong DB
 	 * @return nếu giống nhau trả về true, nếu khác nhau trả về false
@@ -55,7 +54,6 @@ public class Common {
 		}
 		return pass.equals(passDB);
 	}
-
 	/**
 	 * Kiểm tra xem session đã tồn tại chưa
 	 * 
@@ -90,7 +88,6 @@ public class Common {
 		}
 		return lst;
 	}
-
 	/**
 	 * lay vi tri data can lay
 	 * 
@@ -101,7 +98,6 @@ public class Common {
 	public static int getOffset(int currentPage, int limit) {
 		return currentPage * limit - limit + 1;
 	}
-
 	/**
 	 * lay so luong hien thi ban ghi tren 1 trang
 	 * 
@@ -111,7 +107,6 @@ public class Common {
 		MessageErrorProperties me = new MessageErrorProperties();
 		return Integer.parseInt(me.getValueByKey("RECORD"));
 	}
-
 	/**
 	 * tinh tong so trang
 	 * 
@@ -132,14 +127,10 @@ public class Common {
  */
 	public static String replaceWildcard(String fullName) {
 		fullName.replace("\\", "\\\\");
-
 		fullName.replace("%", "\\%");
-
 		fullName.replace("_", "\\_");
-
 		return fullName;
 	}
-
 	public static void main(String[] args) {
 		Common cm = new Common();
 		try {

@@ -43,7 +43,7 @@ public class TblUserDaoImpl extends BaseDaoImpl implements TblUserDao {
 			if (conn != null) {
 				// Tạo câu truy vấn sql
 
-				String sql = "SELECT pass, salt FROM tbl_user WHERE login_name = ?";
+				String sql = "SELECT password, salt FROM tbl_user WHERE login_name = ?";
 				// Thực hiện câu truy vấn bằng PreparedStatement
 				PreparedStatement pre = conn.prepareStatement(sql);
 				// Truyền vào câu sql tham số userName
@@ -141,17 +141,31 @@ public class TblUserDaoImpl extends BaseDaoImpl implements TblUserDao {
 				sql.append(" from tbl_user u left join mst_group gr on u.group_id = gr.group_id");
 				sql.append(" left join tbl_detail_user_japan de on u.user_id = de.user_id");
 				sql.append(" left join mst_japan jp on de.code_level = jp.code_level where u.rule= ? ");
-				sql.append("and u.group_id = ? OR ?  = 0 ");
+				if(groupId!=Constant.GROUP_ID_DEFAULT) {
+					sql.append("and u.group_id = ? ");
+				}
 				sql.append("and u.full_name like ? ");
-				sql.append(" ORDER BY " +  sortType);
+				
+				if(sortType.equals("full_name")) {
+					sql.append(" ORDER BY u.full_name " + sortByFullName + ", de.code_level " + Constant.SORT_NAME_LEVEL_DEFAULT
+							+ ", de.end_date " + Constant.SORT_END_DATE_DEFAULT); 
+				} else if(sortType.equals("code_level")) {
+					sql.append(" ORDER BY de.code_level " + sortByCodeLevel + ", u.full_name " + Constant.SORT_FULL_NAME_DEFAULT + 
+							", de.end_date " + Constant.SORT_END_DATE_DEFAULT);
+				} else if(sortType.equals("end_date")) {
+					sql.append(" ORDER BY de.end_date " + sortByEndDate + ", u.full_name " + Constant.SORT_FULL_NAME_DEFAULT + 
+							", de.code_level " + Constant.SORT_NAME_LEVEL_DEFAULT);
+				}
 				sql.append(" LIMIT ? OFFSET ? ");
 				
 				//gán giá trị truyền vào 
 				int i = 1;
 				PreparedStatement pre = conn.prepareStatement(sql.toString());
 				pre.setInt(i++, Constant.RULE);
-				pre.setInt(i++, groupId);
-				pre.setInt(i++, groupId);
+				if(groupId!=Constant.GROUP_ID_DEFAULT) {
+					pre.setInt(i++, groupId);
+				}
+				
 				pre.setString(i++, "%" + fullName + "%");
 				pre.setInt(i++, limit);
 				pre.setInt(i++, ofset);

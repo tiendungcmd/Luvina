@@ -16,9 +16,9 @@ import Manageruser.logics.TblUserLogics;
  *
  */
 public  interface BaseDao {
-	public static final String url = "jdbc:mysql://localhost:3306/21_buitiendung_manageuser";
+	public static final String url = "jdbc:mysql://localhost:3306/21_buitiendung_manageruser";
 	public static final String user = "root";
-	public static final String password = "0000";
+	public static final String password = "12345678";
 
 	public void connection() throws ClassNotFoundException, SQLException;
 
