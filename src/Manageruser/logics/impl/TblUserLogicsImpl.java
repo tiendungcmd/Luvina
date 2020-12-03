@@ -72,7 +72,6 @@ public class TblUserLogicsImpl implements TblUserLogics {
 	public int getTotalRecords(int groupId, String fullName) {
 		TblUserDao tb = new TblUserDaoImpl();
 		return tb.getTotalUser(groupId, fullName);
-
 	}
 
 	/**
@@ -111,4 +110,6 @@ public class TblUserLogicsImpl implements TblUserLogics {
 			e.printStackTrace();
 		}
 	}
+
+	
 }

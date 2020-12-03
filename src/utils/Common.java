@@ -80,15 +80,34 @@ public class Common {
 	 */
 	public static List<Integer> getListPaging(int totalUser, int limit, int currentPage) {
 		List<Integer> lst = new ArrayList<>();
-		int totalPage = getTotalPage(totalUser, limit);
-		for(int i =1;i<totalPage/2;i++) {
-			if (currentPage > Constant.pageSize*i) {
-				
+//      Tính tổng số trang
+		int totalPage=getTotalPage(totalUser, limit);
+
+//		Nếu tổng số trang lớn hơn giá trị trang hiện tại
+		if (totalPage >= currentPage) {
+//		Tính chỉ số bắt đầu của listPaging
+			int begin;
+//		Vì listPaging là 3 số liên tiếp
+//		Nếu currentPage chia hết cho 3
+			if (currentPage % 3 == 0) {
+				begin = currentPage - 2;
+			} else {
+//			Nếu currentPage không chia hết cho 3
+				begin = (currentPage / 3) * 3 + 1;
+			}
+//		Duyệt vòng for để lưu vào mảng listPaging
+			for (int i = begin; i <= begin + 2; i++) {
+//			Kiểm tra i <= totalPage
+				if (i <= totalPage) {
+//				Thêm chỉ số vào listPaging
+					lst.add(i);
+				}
 			}
 		}
-		//lst.add(i);
+//		Trả về listPaging
 		return lst;
 	}
+
 	/**
 	 * lay vi tri data can lay
 	 * 

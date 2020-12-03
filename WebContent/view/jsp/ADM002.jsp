@@ -147,7 +147,20 @@
 		<!-- Begin vung paging -->
 		<table>
 			<tr>
-				<td class="lbl_paging"><a href="#" name="paging">1</a> &nbsp;
+				<c:url var="paging" value="ListUserController">
+					<c:param name="action" value="paging"></c:param>
+					<c:param name="sortType" value="${sortType }"></c:param>
+					<c:param name="fullName" value="${fullName }"></c:param>
+					<c:param name="groupId" value="${group_id }"></c:param>
+					<c:param name="sortByFullName" value="${sortByFullName }"></c:param>
+					<c:param name="sortByCodeLevel" value="${sortByCodeLevel }"></c:param>
+					<c:param name="sortByEndDate" value="${sortByEndDate }"></c:param>
+					
+				</c:url>
+				<c:forEach items="${ListPaging }" var="paging">
+				
+				</c:forEach>
+				<td class="lbl_paging"><a href="${paging }" name="paging">1</a> &nbsp;
 				 <a	href="#">2</a> &nbsp; <a href="#">3</a> &nbsp; <a href="#">>></a></td>
 			</tr>
 		</table>

@@ -43,7 +43,7 @@ public class TblUserDaoImpl extends BaseDaoImpl implements TblUserDao {
 			if (conn != null) {
 				// Tạo câu truy vấn sql
 
-				String sql = "SELECT password, salt FROM tbl_user WHERE login_name = ?";
+				String sql = "SELECT pass, salt FROM tbl_user WHERE login_name = ?";
 				// Thực hiện câu truy vấn bằng PreparedStatement
 				PreparedStatement pre = conn.prepareStatement(sql);
 				// Truyền vào câu sql tham số userName
@@ -99,8 +99,13 @@ public class TblUserDaoImpl extends BaseDaoImpl implements TblUserDao {
 				// truyen vao sql tham so
 				int i = 1;
 				pre.setInt(i++, Constant.RULE);
-				pre.setInt(i++, groupID);
-				pre.setString(i++, "%" + fullName + "%");
+				if (groupID != 0) {
+					pre.setInt(i++, groupID);
+				}
+				if (!"".equals(fullName) && !fullName.equals(null)) {
+					pre.setString(i++, "%" + fullName + "%");
+				}
+				
 				// thu hien cau truy van
 				ResultSet rs = pre.executeQuery();
 				// lay rs dau tien
@@ -165,7 +170,6 @@ public class TblUserDaoImpl extends BaseDaoImpl implements TblUserDao {
 				if(groupId!=Constant.GROUP_ID_DEFAULT) {
 					pre.setInt(i++, groupId);
 				}
-				
 				pre.setString(i++, "%" + fullName + "%");
 				pre.setInt(i++, limit);
 				pre.setInt(i++, ofset);

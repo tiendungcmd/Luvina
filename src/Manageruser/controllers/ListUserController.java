@@ -36,13 +36,12 @@ public class ListUserController extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// kiem tra login
 		if (Common.checkLogin(request.getSession())) {
-
+			int grId;
 			// khoi tao 1 list de them group vao list
 			List<MstGroupEntities> lstGr = new ArrayList<>();
 			MstGroupLogics mstGr = new MstGroupLogicsImpl();
@@ -59,7 +58,7 @@ public class ListUserController extends HttpServlet {
 			request.setAttribute("lstGroup", lstGr);
 
 			// gan gia tri
-			int grId = Constant.GROUP_ID_DEFAULT;
+			 grId = Constant.GROUP_ID_DEFAULT;
 			String fullName = Constant.FULL_NAME_DEFAULT;
 			String sortByFullName = Constant.SORT_FULL_NAME_DEFAULT;
 			String sortByCodeLevel = Constant.SORT_NAME_LEVEL_DEFAULT;
@@ -67,67 +66,82 @@ public class ListUserController extends HttpServlet {
 			int ofset = Constant.OFFSET_DEFAULT;
 			String sortType = Constant.SORT_TYPE_DEFAULT;
 			int limit = Common.getLimit();
-			System.out.println(sortByFullName);
-			System.out.println(sortByCodeLevel);
-			System.out.println(sortByEndDate);
+			int currentPage=1; 
+			
 			// gán thông báo lên màn hình
 			MessageErrorProperties ms = new MessageErrorProperties();
 			request.setAttribute("ERR", ms.getValueByKey("MSG005"));
-
+			
 			// lấy hành động từ request
 			String action = request.getParameter("action");
 			// kiểm tra xem có rỗng không, nếu rỗng gán giá trị action = default
 			if (action == null) {
 				action = "default";
 			}
-
-			// int grId = Integer.parseInt(request.getParameter("group_id"));
-			// String fullName = request.getParameter("name");
 			switch (action) {
-			case "default":
-				lstUser.addAll(tbUser.getListUsers(ofset, limit, grId, fullName, sortType, sortByFullName,
-						sortByCodeLevel, sortByEndDate));
+			case "default":	
 				break;
 			case "search":
 				fullName = request.getParameter("name");
 				String fName = tbUser.replaceWildcard(fullName);
 				grId = Integer.parseInt(request.getParameter("group_id"));
-				lstUser.addAll(tbUser.getListUsers(ofset, limit, grId, fName, sortType, sortByFullName, sortByCodeLevel,
-						sortByEndDate));
-//				request.setAttribute("fullName", fullName);
-//				request.setAttribute("group_id", grId);
-				// request.setAttribute(name, o);
+				
 				break;
 			case "sort":
-				System.out.println(sortByFullName);
-				System.out.println(sortByCodeLevel);
-				System.out.println(sortByEndDate);
+				
 				sortType = request.getParameter("sortType");
 				fullName = request.getParameter("fullName");
 				//grId = Integer.parseInt(request.getParameter("group_id"));
-				System.out.println(grId);
+			//	grId= Integer.parseInt(request.getParameter("group_id"));
 				String sortValue = String.valueOf(request.getParameter("sortValue"));
 				if ("full_name".equals(sortType)) {
 					sortByFullName = sortValue;
-					lstUser.addAll(tbUser.getListUsers(ofset, limit, grId, fullName, sortType, sortByFullName,
-							sortByCodeLevel, sortByEndDate));
+					//lstUser.addAll(tbUser.getListUsers(ofset, limit, grId, fullName, sortType, sortByFullName,sortByCodeLevel, sortByEndDate));
 				} else if ("code_level".equals(sortType)) {
 					sortByCodeLevel = sortValue;
-					lstUser.addAll(tbUser.getListUsers(ofset, limit, grId, fullName, sortType, sortByFullName,
-							sortByCodeLevel, sortByEndDate));
+				//	lstUser.addAll(tbUser.getListUsers(ofset, limit, grId, fullName, sortType, sortByFullName,sortByCodeLevel, sortByEndDate));
 				} else if ("end_date".equals(sortType)) {
 					sortByEndDate = sortValue;
-					lstUser.addAll(tbUser.getListUsers(ofset, limit, grId, fullName, sortType, sortByFullName,
-							sortByCodeLevel, sortByEndDate));
+					//lstUser.addAll(tbUser.getListUsers(ofset, limit, grId, fullName, sortType, sortByFullName,sortByCodeLevel, sortByEndDate));
 				}
-				break;
+				break;	
 			case "paging":
-				break;
-			default:
-				break;
+				currentPage=Integer.parseInt(request.getParameter("currentPage"));
+				sortType = request.getParameter("sortType");
+				fullName = request.getParameter("fullName");
+				grId = Integer.parseInt(request.getParameter("group_id"));
+			
+				String sortValue1 = String.valueOf(request.getParameter("sortValue"));
+				if ("full_name".equals(sortType)) {
+					sortByFullName = sortValue1;
+				} else if ("code_level".equals(sortType)) {
+					sortByCodeLevel = sortValue1;
+				} else if ("end_date".equals(sortType)) {
+					sortByEndDate = sortValue1;
+				}
+				break;		
 			}
+			//lay tong so user
+			int totalUser=tbUser.getTotalRecords(grId,fullName);
+			//kieem tra neu tong so ban ghi lon hon limit =5 moi phan trang
+			if(totalUser>limit) {
+				List<Integer> lstPaging = Common.getListPaging(totalUser, limit, currentPage);
+				//tong so page
+				int totalpage = Common.getTotalPage(totalUser, limit);
+				//kiem tra nut >><<
+				int beginLstPaging=lstPaging.get(0);
+				int endLstPaging=lstPaging.get(lstPaging.size()-1);
+				//gan len request
+				request.setAttribute("beginLstPaging", beginLstPaging);
+				request.setAttribute("endLstPaging", endLstPaging);
+				request.setAttribute("totalPage", totalpage);
+				request.setAttribute("lstPaging", lstPaging);
+				
+			}
+			
+			lstUser.addAll(tbUser.getListUsers(ofset, limit, grId, fullName, sortType, sortByFullName,sortByCodeLevel, sortByEndDate));
 			request.setAttribute("fullName", fullName);
-			request.setAttribute("groupId", grId);
+			request.setAttribute("group_id", grId);
 			request.setAttribute("sortType", sortType);
 			request.setAttribute("sortByFullName", sortByFullName);
 			request.setAttribute("sortByCodeLevel", sortByCodeLevel);
@@ -139,7 +153,7 @@ public class ListUserController extends HttpServlet {
 			response.sendRedirect(Constant.URL_LOGIN);
 		}
 	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
