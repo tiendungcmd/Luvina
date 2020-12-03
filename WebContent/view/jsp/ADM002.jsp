@@ -85,6 +85,17 @@
 						<c:param name="sortValue" value="ASC"></c:param>
 					</c:if>
 				</c:url>
+				
+				
+				<th align="left">氏名 <a href="${sortFullName }"><c:if
+							test="${sortByFullName == 'DESC' }">△▼</c:if> <c:if
+							test="${sortByFullName == 'ASC' }">▲▽</c:if>
+				</a>
+				</th>
+				<th align="left">生年月日</th>
+				<th align="left">グループ</th>
+				<th align="left">メールアドレス</th>
+				<th align="left" width="70px">電話番号</th>
 				<c:url var="sortCodeLevel" value="ListUserController">
 					<c:param name="action" value="sort"></c:param>
 					<c:param name="sortType" value="code_level"></c:param>
@@ -97,6 +108,10 @@
 						<c:param name="sortValue" value="ASC"></c:param>
 					</c:if>
 				</c:url>
+				<th align="left">日本語能力 <a href="${sortCodeLevel }"> <c:if
+							test="${sortByCodeLevel eq 'DESC' }">△▼</c:if> <c:if
+							test="${sortByCodeLevel eq 'ASC' }">▲▽</c:if></a>
+				</th>
 				<c:url var="sortEndDate" value="ListUserController">
 					<c:param name="action" value="sort"></c:param>
 					<c:param name="sortType" value="end_date"></c:param>
@@ -109,19 +124,6 @@
 						<c:param name="sortValue" value="ASC"></c:param>
 					</c:if>
 				</c:url>
-				<th align="left">氏名 <a href="${sortFullName }"><c:if
-							test="${sortByFullName == 'DESC' }">△▼</c:if> <c:if
-							test="${sortByFullName == 'ASC' }">▲▽</c:if>
-				</a>
-				</th>
-				<th align="left">生年月日</th>
-				<th align="left">グループ</th>
-				<th align="left">メールアドレス</th>
-				<th align="left" width="70px">電話番号</th>
-				<th align="left">日本語能力 <a href="${sortCodeLevel }"> <c:if
-							test="${sortByCodeLevel eq 'DESC' }">△▼</c:if> <c:if
-							test="${sortByCodeLevel eq 'ASC' }">▲▽</c:if></a>
-				</th>
 				<th align="left">失効日 <a href="${sortEndDate }"> <c:if
 							test="${sortByEndDate eq 'DESC' }">△▼</c:if> <c:if
 							test="${sortByEndDate eq 'ASC' }">▲▽</c:if></a>
@@ -145,8 +147,8 @@
 		<!-- Begin vung paging -->
 		<table>
 			<tr>
-				<td class="lbl_paging"><a href="#" name="paging">1</a> &nbsp; <a
-					href="#">2</a> &nbsp; <a href="#">3</a> &nbsp; <a href="#">>></a></td>
+				<td class="lbl_paging"><a href="#" name="paging">1</a> &nbsp;
+				 <a	href="#">2</a> &nbsp; <a href="#">3</a> &nbsp; <a href="#">>></a></td>
 			</tr>
 		</table>
 	</c:if>

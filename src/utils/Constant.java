@@ -38,5 +38,5 @@ public class Constant {
 			public static final String SORT_FULL_NAME_DEFAULT = "ASC";
 			public static final String SORT_NAME_LEVEL_DEFAULT = "ASC";
 			public static final String SORT_END_DATE_DEFAULT = "DESC";
-
+			public static final int pageSize = 3;
 }
